@@ -3,9 +3,9 @@ import { createClient, OAuthStrategy } from '@wix/sdk';
 
 const myWixClient = createClient({
     modules: { items },
-    auth: OAuthStrategy({ clientId: "4b115364-e9ff-48f5-8e2b-f8cb49116c7c" }),
+    auth: OAuthStrategy({ clientId: import.meta.env.VITE_WIX_CLIENT_ID }),
 });
-
+console.log("WIX_CLIENT_ID:", import.meta.env.VITE_WIX_CLIENT_ID);
 export async function insertItemToCMS(toInsert) {
     const inserted = await myWixClient.items.insert("Orders", toInsert);
     return inserted;

@@ -4,7 +4,7 @@ import { OUTLETS } from "./outlets.js";
 const router = Router();
 
 const MAX_DELIVERY_KM = 10;
-const GOOGLE_MAPS_API_KEY = "AIzaSyByQ6dmsSRqaNAFgOcm6EYAScEOd_0P7ug";
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 function deliveryChargeForDistance(km) {
   if (km > MAX_DELIVERY_KM) return null;
