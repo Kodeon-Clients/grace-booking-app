@@ -14,8 +14,11 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^2.1.1",
-    "@wix/data": "^1.0.506",
-    "@wix/sdk": "^1.21.15",
+    "@wix/data": "^1.0.244",
+    "@wix/headless-components": "^0.0.46",
+    "@wix/headless-utils": "^0.0.12",
+    "@wix/sdk": "^1.21.14",
+    "@wix/services-manager": "^1.0.7",
     "express": "^5.2.1",
     "js-cookie": "^3.0.8",
     "react": "^19.2.7",
