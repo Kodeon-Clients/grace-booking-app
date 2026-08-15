@@ -3,11 +3,11 @@ export async function calculateDistance({
   longitude,
   outlet,
 }) {
-  console.log("calculateDistance input:", {
-    latitude,
-    longitude,
-    outlet,
-  });
+  // console.log("calculateDistance input:", {
+  //   latitude,
+  //   longitude,
+  //   outlet,
+  // });
 
   const response = await fetch(
     "https://routes.googleapis.com/directions/v2:computeRoutes",

@@ -17,8 +17,10 @@ const initialBooking = {
   // parcel
   quantity: 1,
 
+  door: "",
   address: "",
   postcode: "",
+  landmark: "",
   latitude: null,
   longitude: null,
   distanceKm: null,

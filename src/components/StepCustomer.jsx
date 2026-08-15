@@ -16,9 +16,17 @@ export default function StepCustomer() {
   const dateLabel = EVENT_DATES.find((d) => d.id === booking.date)?.label;
 
   function validate() {
+    const phone = booking.phone.replace(/\D/g, "");
+
     if (!booking.name.trim()) return "Please enter your name.";
-    if (!/^\d{10}$/.test(booking.phone.replace(/\D/g, ""))) {
+    if (!/^\d{10}$/.test(phone)) {
       return "Please enter a valid 10-digit phone number.";
+    }
+    if (!booking.email?.trim()) {
+      return "Email is required.";
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.email.trim())) {
+      return "Please enter a valid email address.";
     }
     return null;
   }
@@ -44,7 +52,7 @@ export default function StepCustomer() {
         total_amount: booking.totalAmount,
         customer_name: booking.name,
         customer_phone: booking.phone,
-        customer_email: booking.email || undefined,
+        customer_email: booking.email,
       });
 
       if (isRazorpayConfigured()) {
@@ -102,7 +110,7 @@ export default function StepCustomer() {
       </div>
 
       <div className="field">
-        <label className="field__label">Email (optional)</label>
+        <label className="field__label">Email</label>
         <input
           className="field__input"
           value={booking.email}
@@ -121,7 +129,7 @@ export default function StepCustomer() {
           <span className="amount">{formatRupees(booking.totalAmount || 0)}</span>
         </div>
       </div>
-
+      <p>Grace's team will call you shortly to confirm details and collect payment.</p>
       <button type="button" className="btn btn-primary" onClick={handlePay} disabled={paying}>
         {paying ? "Booking…" : "Confirm booking"}
       </button>

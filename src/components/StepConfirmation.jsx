@@ -51,7 +51,7 @@ export default function StepConfirmation() {
 
         const result = await insertItemToCMS(booking);
 
-        console.log("CMS inserted:", result);
+        // console.log("CMS inserted:", result);
 
         setLoading(false);
       } catch (error) {
