@@ -45,8 +45,8 @@ export const EVENT_DATES = [
     id: "2026-08-26",
     label: "26 August",
     outlets: {
-      parcel: ["eternal-nerul", "grace-kharghar"],
-      table: ["grace-nerul", "grace-kharghar"],
+      parcel: ["grace-nerul", "grace-kharghar"],
+      table: ["eternal-nerul", "grace-kharghar"],
       takeaway: ["eternal-nerul", "grace-kharghar"],
     },
   },

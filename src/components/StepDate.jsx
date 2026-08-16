@@ -15,7 +15,7 @@ export default function StepDate() {
         When would you like your Sadhya?
       </h2>
       <p className="field__hint" style={{ marginBottom: 18 }}>
-        Onam Sadhya booking is open for three dates only.
+        Onam Sadhya booking is open for two dates only.
       </p>
       <div className="choice-grid">
         {EVENT_DATES.map((d) => (
