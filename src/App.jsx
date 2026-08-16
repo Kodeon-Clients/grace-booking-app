@@ -39,7 +39,10 @@ function BookingApp() {
       <header className="app-header">
         <img src="/logo.png" width={36} height={36}></img>
         <div className="app-header__mark">Onam Sadhya</div>
-        <h1 className="app-header__title">Grace Restaurant</h1>
+        <div>
+          <h1 className="app-header__title">Grace Restaurant</h1>
+          <p className="header__locations">Kharghar • Nerul, Navi Mumbai</p>
+        </div>
         <p className="app-header__subtitle">Book a parcel, a table, or a takeaway</p>
       </header>
       <ProgressTrail />

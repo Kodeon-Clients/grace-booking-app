@@ -9,17 +9,22 @@
    ============================================================ */
 
 :root {
-  --cream:        #FBF6EA;   /* kasavu cloth */
-  --cream-deep:   #F2E9D6;
-  --ink:          #241F1A;   /* warm near-black */
-  --ink-soft:     #5A5148;
-  --maroon:       #7A1F2B;   /* temple / pallu accent */
-  --maroon-deep:  #5E1620;
-  --gold:         #B8860B;   /* kasavu woven border */
-  --gold-soft:    #D9B75C;
-  --leaf:         #2F4B3C;   /* banana leaf */
-  --leaf-deep:    #1F3529;
-  --leaf-soft:    #E4ECE2;
+  --cream: #FBF6EA;
+  /* kasavu cloth */
+  --cream-deep: #F2E9D6;
+  --ink: #241F1A;
+  /* warm near-black */
+  --ink-soft: #5A5148;
+  --maroon: #7A1F2B;
+  /* temple / pallu accent */
+  --maroon-deep: #5E1620;
+  --gold: #B8860B;
+  /* kasavu woven border */
+  --gold-soft: #D9B75C;
+  --leaf: #2F4B3C;
+  /* banana leaf */
+  --leaf-deep: #1F3529;
+  --leaf-soft: #E4ECE2;
 
   --radius-card: 18px;
   --radius-control: 10px;
@@ -32,9 +37,15 @@
   --shadow-lift: 0 4px 10px rgba(36, 31, 26, 0.08), 0 16px 40px rgba(36, 31, 26, 0.10);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html, body, #root { height: 100%; }
+html,
+body,
+#root {
+  height: 100%;
+}
 
 body {
   margin: 0;
@@ -44,7 +55,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button, input, select { font-family: inherit; }
+button,
+input,
+select {
+  font-family: inherit;
+}
 
 :focus-visible {
   outline: 2px solid var(--maroon);
@@ -52,7 +67,10 @@ button, input, select { font-family: inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
@@ -75,9 +93,16 @@ button, input, select { font-family: inherit; }
 }
 
 /* ---------- Layout shell ---------- */
-.app-shell { min-height: 100%; display: flex; flex-direction: column; }
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
-.app-header { padding: 28px 24px 8px; text-align: center; }
+.app-header {
+  padding: 28px 24px 8px;
+  text-align: center;
+}
 
 .app-header__mark {
   font-family: var(--font-display);
@@ -96,7 +121,14 @@ button, input, select { font-family: inherit; }
   margin: 4px 0 2px;
 }
 
-.app-header__subtitle { font-size: 14px; color: var(--ink-soft); }
+.header__locations {
+  margin: 2px 0;
+}
+
+.app-header__subtitle {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
 
 .app-main {
   flex: 1;
@@ -145,12 +177,19 @@ button, input, select { font-family: inherit; }
 }
 
 .trail__fold.is-done::after,
-.trail__fold.is-active::after { transform: scaleX(1); }
+.trail__fold.is-active::after {
+  transform: scaleX(1);
+}
 
-.trail__fold.is-active::after { background: var(--gold); }
+.trail__fold.is-active::after {
+  background: var(--gold);
+}
 
 /* ---------- Choice cards (date / outlet / type) ---------- */
-.choice-grid { display: grid; gap: 12px; }
+.choice-grid {
+  display: grid;
+  gap: 12px;
+}
 
 .choice-card {
   display: flex;
@@ -166,7 +205,10 @@ button, input, select { font-family: inherit; }
   transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
 }
 
-.choice-card:hover { border-color: var(--gold-soft); transform: translateY(-1px); }
+.choice-card:hover {
+  border-color: var(--gold-soft);
+  transform: translateY(-1px);
+}
 
 .choice-card.is-selected {
   border-color: var(--maroon);
@@ -181,9 +223,16 @@ button, input, select { font-family: inherit; }
   color: var(--ink);
 }
 
-.choice-card__meta { font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+.choice-card__meta {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
 
-.choice-card__glyph { font-size: 22px; line-height: 1; }
+.choice-card__glyph {
+  font-size: 22px;
+  line-height: 1;
+}
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -200,14 +249,31 @@ button, input, select { font-family: inherit; }
   transition: background 150ms ease, opacity 150ms ease;
 }
 
-.btn-primary { width: 100%; background: var(--maroon); color: var(--cream); }
-.btn-primary:hover { background: var(--maroon-deep); }
-.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary {
+  width: 100%;
+  background: var(--maroon);
+  color: var(--cream);
+}
 
-.btn-ghost { background: transparent; color: var(--maroon); padding: 8px 4px; }
+.btn-primary:hover {
+  background: var(--maroon-deep);
+}
+
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--maroon);
+  padding: 8px 4px;
+}
 
 /* ---------- Form elements ---------- */
-.field { margin-bottom: 18px; }
+.field {
+  margin-bottom: 18px;
+}
 
 .field__label {
   display: block;
@@ -217,9 +283,15 @@ button, input, select { font-family: inherit; }
   margin-bottom: 6px;
 }
 
-.field__hint { font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+.field__hint {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 6px;
+}
 
-.field__input, .field__select, .field__textarea {
+.field__input,
+.field__select,
+.field__textarea {
   width: 100%;
   border: 1.5px solid var(--cream-deep);
   border-radius: var(--radius-control);
@@ -229,7 +301,10 @@ button, input, select { font-family: inherit; }
   background: var(--cream);
 }
 
-.field__textarea { resize: vertical; min-height: 64px; }
+.field__textarea {
+  resize: vertical;
+  min-height: 64px;
+}
 
 .stepper {
   display: inline-flex;
@@ -261,9 +336,20 @@ button, input, select { font-family: inherit; }
 }
 
 /* ---------- Pricing summary ---------- */
-.summary { background: var(--leaf-soft); border-radius: var(--radius-control); padding: 14px 16px; margin: 4px 0 20px; }
+.summary {
+  background: var(--leaf-soft);
+  border-radius: var(--radius-control);
+  padding: 14px 16px;
+  margin: 4px 0 20px;
+}
 
-.summary__row { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-soft); padding: 4px 0; }
+.summary__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--ink-soft);
+  padding: 4px 0;
+}
 
 .summary__row.is-total {
   border-top: 1px dashed var(--gold-soft);
@@ -274,11 +360,19 @@ button, input, select { font-family: inherit; }
   font-size: 17px;
 }
 
-.summary__row .amount { font-family: var(--font-mono); }
+.summary__row .amount {
+  font-family: var(--font-mono);
+}
 
-.summary__note { font-size: 12px; color: var(--maroon); margin-top: 6px; }
+.summary__note {
+  font-size: 12px;
+  color: var(--maroon);
+  margin-top: 6px;
+}
 
-.back-nav { margin-bottom: 12px; }
+.back-nav {
+  margin-bottom: 12px;
+}
 
 /* ---------- Distance calculating: pookalam ring loader ---------- */
 .pookalam-loader {
@@ -288,21 +382,31 @@ button, input, select { font-family: inherit; }
   border-radius: 50%;
   background:
     radial-gradient(circle at 50% 50%, var(--cream) 0 6px, transparent 7px),
-    conic-gradient(
-      var(--maroon) 0deg 40deg, var(--gold) 40deg 80deg,
+    conic-gradient(var(--maroon) 0deg 40deg, var(--gold) 40deg 80deg,
       var(--leaf) 80deg 120deg, var(--maroon) 120deg 160deg,
       var(--gold) 160deg 200deg, var(--leaf) 200deg 240deg,
       var(--maroon) 240deg 280deg, var(--gold) 280deg 320deg,
-      var(--leaf) 320deg 360deg
-    );
+      var(--leaf) 320deg 360deg);
   animation: spin 1.6s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-.loader-row { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
+.loader-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0 4px;
+}
 
-.loader-row__label { font-size: 13px; color: var(--ink-soft); }
+.loader-row__label {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
 
 /* ---------- Confirmation "ticket" ---------- */
 .ticket {
@@ -326,7 +430,12 @@ button, input, select { font-family: inherit; }
   margin: 0 auto 12px;
 }
 
-.ticket__id { font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); text-align: center; }
+.ticket__id {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-align: center;
+}
 
 .ticket__title {
   font-family: var(--font-display);
@@ -345,7 +454,9 @@ button, input, select { font-family: inherit; }
   border-bottom: 1px solid var(--cream-deep);
 }
 
-.ticket__row:last-of-type { border-bottom: none; }
+.ticket__row:last-of-type {
+  border-bottom: none;
+}
 
 .error-banner {
   background: #FBE9E7;
