@@ -36,8 +36,8 @@ export default function StepConfirmation() {
     booking.orderType === "parcel"
       ? `${booking.quantity} × Sadhya to ${booking.address}`
       : booking.orderType === "table"
-        ? `${booking.partySize} people · ${booking.timeSlot}`
-        : `${booking.takeawayQuantity} × Sadhya · ${booking.pickupWindow}`;
+        ? `${booking.partySize} people`
+        : `${booking.takeawayQuantity} × Sadhya`;
 
   useEffect(() => {
     if (hasInserted.current) return;
