@@ -34,7 +34,7 @@ export const OUTLETS = [
 export const EVENT_DATES = [
   {
     id: "2026-08-25",
-    label: "25 August",
+    label: "25 August - Tuesday",
     outlets: {
       parcel: ["grace-nerul", "grace-kharghar", "achayans-nerul"],
       table: ["grace-nerul", "grace-kharghar", "achayans-nerul"],
@@ -43,7 +43,7 @@ export const EVENT_DATES = [
   },
   {
     id: "2026-08-26",
-    label: "26 August",
+    label: "26 August - Wednesday",
     outlets: {
       parcel: ["grace-nerul", "grace-kharghar"],
       table: ["eternal-nerul", "grace-kharghar"],

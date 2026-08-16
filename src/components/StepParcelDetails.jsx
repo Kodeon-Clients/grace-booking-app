@@ -75,10 +75,10 @@ export default function StepParcelDetails() {
         outlet,
       });
 
-      console.log(
-        "calculateDistance result:",
-        result
-      );
+      // console.log(
+      //   "calculateDistance result:",
+      //   result
+      // );
 
       if (
         !result ||

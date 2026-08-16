@@ -37,6 +37,7 @@ function BookingApp() {
     <div className="app-shell">
       <div className="kasavu-border" />
       <header className="app-header">
+        <img src="/logo.png" width={36} height={36}></img>
         <div className="app-header__mark">Onam Sadhya</div>
         <h1 className="app-header__title">Grace Restaurant</h1>
         <p className="app-header__subtitle">Book a parcel, a table, or a takeaway</p>

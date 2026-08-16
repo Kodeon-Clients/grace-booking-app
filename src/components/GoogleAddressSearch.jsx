@@ -10,9 +10,20 @@ export default function GoogleAddressSearch({
 }) {
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
+  const onChangeRef = useRef(onChange);
+  const onSelectRef = useRef(onSelect);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Always keep the latest callbacks
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  useEffect(() => {
+    onSelectRef.current = onSelect;
+  }, [onSelect]);
 
   useEffect(() => {
     let listener;
@@ -43,7 +54,6 @@ export default function GoogleAddressSearch({
               "name",
               "address_components",
             ],
-
             componentRestrictions: {
               country: "in",
             },
@@ -51,39 +61,43 @@ export default function GoogleAddressSearch({
 
         autocompleteRef.current = autocomplete;
 
-        listener =
-          autocomplete.addListener(
-            "place_changed",
-            () => {
-              const place =
-                autocomplete.getPlace();
+        listener = autocomplete.addListener(
+          "place_changed",
+          () => {
+            const place = autocomplete.getPlace();
 
-              if (!place.geometry?.location) {
-                console.warn(
-                  "No location found for selected place"
-                );
-                return;
-              }
-
-              const lat =
-                place.geometry.location.lat();
-
-              const lng =
-                place.geometry.location.lng();
-
-              const address =
-                place.formatted_address ||
-                place.name ||
-                "";
-
-              onSelect({
-                address,
-                lat,
-                lng,
-                place,
-              });
+            if (!place.geometry?.location) {
+              console.warn(
+                "No location found for selected place"
+              );
+              return;
             }
-          );
+
+            const lat =
+              place.geometry.location.lat();
+
+            const lng =
+              place.geometry.location.lng();
+
+            const address =
+              place.formatted_address ||
+              place.name ||
+              "";
+
+            // IMPORTANT:
+            // Update React's controlled value
+            // immediately after Google selection.
+            onChangeRef.current(address);
+
+            // Send complete location data to parent
+            onSelectRef.current({
+              address,
+              lat,
+              lng,
+              place,
+            });
+          }
+        );
 
         setLoading(false);
       } catch (error) {
@@ -106,8 +120,10 @@ export default function GoogleAddressSearch({
       if (listener) {
         listener.remove();
       }
+
+      autocompleteRef.current = null;
     };
-  }, [onSelect]);
+  }, []);
 
   return (
     <div className="field">
@@ -124,7 +140,7 @@ export default function GoogleAddressSearch({
             ? "Loading address search..."
             : "Search delivery address"
         }
-        value={value}
+        value={value || ""}
         onChange={(e) =>
           onChange(e.target.value)
         }
