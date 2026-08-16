@@ -45,7 +45,7 @@ export default function StepType() {
         What would you like?
       </h2>
       <p className="field__hint" style={{ marginBottom: 18 }}>
-        One Sadhya is ₹999, however you take it.
+
       </p>
       <div className="choice-grid">
         {types.map((t) => (

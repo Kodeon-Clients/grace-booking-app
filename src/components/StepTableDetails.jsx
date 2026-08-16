@@ -23,21 +23,6 @@ export default function StepTableDetails() {
       </h2>
 
       <div className="field">
-        <label className="field__label">Time slot</label>
-        <select
-          className="field__select"
-          value={booking.timeSlot || ""}
-          onChange={(e) => update({ timeSlot: e.target.value })}
-        >
-          <option value="" disabled>Select a time</option>
-          {TIME_SLOTS.map((slot) => (
-            <option key={slot} value={slot}>{slot}</option>
-          ))}
-        </select>
-        {/* TODO(backend): disable slots that have hit TABLE_SLOT_CAPACITY for this date+outlet */}
-      </div>
-
-      <div className="field">
         <label className="field__label">Number of people</label>
         <QuantityStepper
           value={booking.partySize}
@@ -56,14 +41,13 @@ export default function StepTableDetails() {
           <span>Total</span>
           <span className="amount">{formatRupees(total)}</span>
         </div>
-        <p className="summary__note">Prepaid — this holds your table for the slot.</p>
+        <p className="summary__note">This holds your booking but will be served on first come first serve basis. Starting at 12pm</p>
       </div>
 
       <button
         type="button"
         className="btn btn-primary"
         onClick={handleContinue}
-        disabled={!booking.timeSlot}
       >
         Continue
       </button>

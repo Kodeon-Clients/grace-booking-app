@@ -49,9 +49,15 @@ export default function StepConfirmation() {
         setLoading(true);
         setError(null);
 
-        const result = await insertItemToCMS(booking);
+        const cmsBooking = {
+          ...booking,
 
-        // console.log("CMS inserted:", result);
+          quantity:booking.orderType === "parcel"? booking.quantity: 0,
+          partySize:booking.orderType === "table"? booking.partySize: 0,
+          takeawayQuantity:booking.orderType === "takeaway"? booking.takeawayQuantity: 0,
+        };
+
+        const result = await insertItemToCMS(cmsBooking);
 
         setLoading(false);
       } catch (error) {
@@ -65,7 +71,7 @@ export default function StepConfirmation() {
     }
 
     saveBooking();
-  }, []);
+  }, [booking]);
 
   // Loading screen
   if (loading) {

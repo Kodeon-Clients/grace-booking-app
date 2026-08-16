@@ -34,21 +34,6 @@ export default function StepTakeawayDetails() {
         />
       </div>
 
-      <div className="field">
-        <label className="field__label">Pickup window</label>
-        <select
-          className="field__select"
-          value={booking.pickupWindow || ""}
-          onChange={(e) => update({ pickupWindow: e.target.value })}
-        >
-          <option value="" disabled>Select a 30-minute window</option>
-          {PICKUP_WINDOWS.map((w) => (
-            <option key={w} value={w}>{w}</option>
-          ))}
-        </select>
-        {/* TODO(backend): disable windows at TAKEAWAY_WINDOW_CAP for this date+outlet */}
-      </div>
-
       <div className="summary">
         <div className="summary__row">
           <span>{booking.takeawayQuantity} × {formatRupees(price)}</span>
@@ -65,7 +50,6 @@ export default function StepTakeawayDetails() {
         type="button"
         className="btn btn-primary"
         onClick={handleContinue}
-        disabled={!booking.pickupWindow}
       >
         Continue
       </button>
