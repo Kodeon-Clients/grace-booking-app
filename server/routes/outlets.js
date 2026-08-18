@@ -7,7 +7,7 @@ export const OUTLETS = [
   {
     id: "grace-nerul",
     name: "Grace Nerul",
-    address: "Shop No. 13, Type Building, F-2, Opp. Bank of Maharashtra, Nerul East, Sector 3, Nerul, Navi Mumbai, Maharashtra 400706",
+    address: "Shop No. 13, Type Building, F-2, Opp. Bank of Maharashtra, Nerul East, Sector 3, Nerul (Navi Mumbai), Maharashtra 400706",
     lat: 19.0330,
     lng: 73.0190,
     city: "Navi Mumbai",
@@ -15,7 +15,7 @@ export const OUTLETS = [
   {
     id: "achayans-nerul",
     name: "Achayans Nerul",
-    address: "15, Jagadguru Chandrasekhara Saraswathi Marg, NL-6, Sector 15, Nerul, Navi Mumbai, Maharashtra 400706",
+    address: "15, Jagadguru Chandrasekhara Saraswathi Marg, NL-6, Sector 15, Nerul (Navi Mumbai), Maharashtra 400706",
     lat: 19.0350,
     lng: 73.0155,
     city: "Navi Mumbai",
@@ -31,7 +31,7 @@ export const OUTLETS = [
   {
     id: "eternal-nerul",
     name: "Eternal Hall Hope Charity Mission Hall",
-    address: "Bethany Children's Home, Plot No. 4A, Sector 5, Nerul East, Navi Mumbai, Maharashtra 400706",
+    address: "Bethany Children's Home, Plot No. 4A, Sector 5, Nerul East (Navi Mumbai), Maharashtra 400706",
     lat: 19.0338,
     lng: 73.0196,
     city: "Navi Mumbai",

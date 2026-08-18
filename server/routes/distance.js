@@ -3,14 +3,15 @@ import { OUTLETS } from "./outlets.js";
 
 const router = Router();
 
-const MAX_DELIVERY_KM = 10;
+const MAX_DELIVERY_KM = 100;
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-function deliveryChargeForDistance(km) {
-  if (km > MAX_DELIVERY_KM) return null;
-  if (km <= 2) return 200;
-  if (km <= 5) return 400;
-  return 600;
+export function deliveryChargeForDistance(km) {
+  if (km == null || km < 0 || km > MAX_DELIVERY_KM) return null;
+
+  if (km <= 3) return 100;
+
+  return 100 + Math.ceil((km - 3) / 3) * 30;
 }
 
 // POST /api/calculate-distance

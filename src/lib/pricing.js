@@ -11,7 +11,7 @@ export const PRICES = {
   },
 };
 
-export const MAX_DELIVERY_KM = 10;
+export const MAX_DELIVERY_KM = 100;
 export const MAX_TABLE_PARTY_SIZE = 35;
 export const TAKEAWAY_WINDOW_CAP = 15;
 export const TABLE_SLOT_CAPACITY = 33;
@@ -22,11 +22,13 @@ export function getSadhyaPrice(date, orderType) {
 }
 
 export function deliveryChargeForDistance(km) {
-  if (km == null || km > MAX_DELIVERY_KM) return null;
-  if (km <= 2) return 200;
-  if (km <= 5) return 400;
-  return 600;
+  if (km == null || km < 0 || km > MAX_DELIVERY_KM) return null;
+
+  if (km <= 3) return 100;
+
+  return 100 + Math.ceil((km - 3) / 3) * 30;
 }
+
 export function tableTotal(date, partySize) {
   return partySize * getSadhyaPrice(date, "table");
 }
@@ -41,12 +43,18 @@ export function parcelTotal(date, quantity, deliveryCharge) {
     (deliveryCharge || 0)
   );
 }
+
 export function deliverySlabLabel(km) {
-  if (km == null) return "";
+  if (km == null || km < 0) return "";
+
   if (km > MAX_DELIVERY_KM) return "Beyond delivery range";
-  if (km <= 2) return "0–2 km";
-  if (km <= 5) return "2–5 km";
-  return "6–10 km";
+
+  if (km <= 3) return "1–3 km";
+
+  const slabStart = Math.floor((km - 1) / 3) * 3 + 1;
+  const slabEnd = slabStart + 2;
+
+  return `${slabStart}–${slabEnd} km`;
 }
 
 export function formatRupees(amount) {

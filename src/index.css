@@ -116,7 +116,7 @@ select {
 .app-header__title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 28px;
+  font-size: 30px;
   color: var(--maroon-deep);
   margin: 4px 0 2px;
 }
