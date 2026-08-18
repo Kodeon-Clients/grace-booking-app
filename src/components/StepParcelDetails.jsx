@@ -190,14 +190,12 @@ export default function StepParcelDetails() {
         className="choice-card__title"
         style={{
           fontSize: 20,
-          marginBottom: 4,
+          marginBottom: 16,
         }}
       >
         Parcel — home delivery
       </h2>
-      <p className="field__hint" style={{ marginBottom: 18 }}>
-        We deliver upto {MAX_DELIVERY_KM}kms from the selected location
-      </p>
+
       {error && (
         <div className="error-banner">
           {error}
