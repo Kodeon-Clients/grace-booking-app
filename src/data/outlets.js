@@ -25,7 +25,7 @@ export const OUTLETS = [
   {
     id: "eternal-nerul",
     name: "Eternal Hall Hope Charity Mission Hall",
-    area: "Sector 5 Nerul (Navi Mumbai)",
+    area: "Sector 5, Nerul (Navi Mumbai)",
     lat: 19.0338,
     lng: 73.0196,
   },

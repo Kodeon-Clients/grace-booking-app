@@ -26,6 +26,13 @@ export default function StepParcelDetails() {
     booking.orderType
   );
 
+  const payasamTotal = (booking.payasamOption || []).reduce(
+    (sum, payasam) => sum + payasam.price,
+    0
+  );
+
+
+
   const charge = deliveryChargeForDistance(
     booking.distanceKm
   );
@@ -42,6 +49,8 @@ export default function StepParcelDetails() {
       })
       : null;
 
+  const finalTotal = total + payasamTotal;
+  
   async function handleCheckDistance() {
     if (!booking.address?.trim()) {
       setError("Enter a delivery address.");
@@ -159,7 +168,7 @@ export default function StepParcelDetails() {
       return;
     }
 
-    if (total == null) {
+    if (finalTotal == null) {
       setError(
         "Please calculate your delivery charge before continuing."
       );
@@ -169,7 +178,7 @@ export default function StepParcelDetails() {
     setError(null);
 
     update({
-      totalAmount: total,
+      totalAmount: finalTotal,
     });
 
     goNext();
@@ -349,7 +358,19 @@ export default function StepParcelDetails() {
                   )}
                 </span>
               </div>
+              {booking.payasamOption?.length > 0 && (
+                <div className="summary__row">
+                  <span>
+                    Payassam × {booking.payasamOption?.length}
+                  </span>
 
+                  <span className="amount">
+                    {formatRupees(
+                      payasamTotal
+                    )}
+                  </span>
+                </div>
+              )}
               <div className="summary__row">
                 <span>Delivery charge</span>
 
@@ -366,7 +387,7 @@ export default function StepParcelDetails() {
                 <span>Total</span>
 
                 <span className="amount">
-                  {formatRupees(total)}
+                  {formatRupees(finalTotal)}
                 </span>
               </div>
             </>
@@ -397,7 +418,7 @@ export default function StepParcelDetails() {
         disabled={
           checking ||
           outOfRange ||
-          total == null ||
+          finalTotal == null ||
           booking.distanceKm == null
         }
       >

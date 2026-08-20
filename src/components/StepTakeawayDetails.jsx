@@ -1,18 +1,32 @@
 import { useBooking } from "../context/BookingContext";
 import QuantityStepper from "./QuantityStepper";
-import { PICKUP_WINDOWS } from "../data/outlets";
 import { takeawayTotal, formatRupees, getSadhyaPrice } from "../lib/pricing";
 
 export default function StepTakeawayDetails() {
   const { booking, update, goNext, goBack } = useBooking();
+
   const total = takeawayTotal(
     booking.date,
     booking.takeawayQuantity
   );
-  const price = getSadhyaPrice(booking.date, booking.orderType);
+
+  const payasamTotal = (booking.payasamOption || []).reduce(
+    (sum, payasam) => sum + payasam.price,
+    0
+  );
+
+  const finalTotal = total + payasamTotal;
+
+  const price = getSadhyaPrice(
+    booking.date,
+    booking.orderType
+  );
 
   function handleContinue() {
-    update({ totalAmount: total });
+    update({
+      totalAmount: finalTotal,
+    });
+
     goNext();
   }
 
@@ -36,12 +50,21 @@ export default function StepTakeawayDetails() {
 
       <div className="summary">
         <div className="summary__row">
-          <span>{booking.takeawayQuantity} × {formatRupees(price)}</span>
-          <span className="amount">{formatRupees(total)}</span>
+          <div>
+            <span>{booking.takeawayQuantity} × {formatRupees(price)}</span>
+
+            {(booking.payasamOption || []).map((payasam) => (
+              <span key={payasam.name}>
+                {" + "}
+                {booking.takeawayQuantity} × {formatRupees(payasam.price)}
+              </span>
+            ))}
+          </div>
+          <span className="amount">{formatRupees(finalTotal)}</span>
         </div>
         <div className="summary__row is-total">
           <span>Total</span>
-          <span className="amount">{formatRupees(total)}</span>
+          <span className="amount">{formatRupees(finalTotal)}</span>
         </div>
         <p className="summary__note">No delivery charge — collect it yourself.</p>
       </div>

@@ -39,6 +39,17 @@ export default function StepConfirmation() {
         ? `${booking.partySize} people`
         : `${booking.takeawayQuantity} × Sadhya`;
 
+  const payasamDetail = (booking.payasamOption || [])
+    .map(
+      (payasam) =>
+        `${booking.orderType === "table" ? booking.partySize : booking.takeawayQuantity} × ${payasam.name}`
+    )
+    .join(" + ");
+
+  const finalDetail = payasamDetail
+    ? `${detail} + ${payasamDetail}`
+    : detail;
+
   useEffect(() => {
     if (hasInserted.current) return;
 
@@ -52,14 +63,17 @@ export default function StepConfirmation() {
         const cmsBooking = {
           ...booking,
 
-          quantity:booking.orderType === "parcel"? booking.quantity: 0,
-          partySize:booking.orderType === "table"? booking.partySize: 0,
-          takeawayQuantity:booking.orderType === "takeaway"? booking.takeawayQuantity: 0,
+          quantity: booking.orderType === "parcel" ? booking.quantity : 0,
+          partySize: booking.orderType === "table" ? booking.partySize : 0,
+          takeawayQuantity: booking.orderType === "takeaway" ? booking.takeawayQuantity : 0,
+          payasamOption: (booking.payasamOption || []).map((payasam) => `${payasam.name} - ₹${payasam.price}`).join(", "),
         };
 
         const result = await insertItemToCMS(cmsBooking);
+        if (result._id) {
+          setLoading(false);
+        }
 
-        setLoading(false);
       } catch (error) {
         console.error("CMS insert failed:", error);
 
@@ -156,7 +170,7 @@ export default function StepConfirmation() {
 
         <div className="ticket__row">
           <span>Details</span>
-          <span>{detail}</span>
+          <span>{finalDetail}</span>
         </div>
 
         <div className="ticket__row">

@@ -19,7 +19,21 @@ export default function StepOutlet() {
   );
 
   function choose(outletId) {
-    update({ outletId });
+    const outletChanged = booking.outletId !== outletId;
+
+    update({
+      outletId,
+      ...(outletChanged && {
+        address: "",
+        postcode: "",
+        landmark: "",
+        latitude: null,
+        longitude: null,
+        distanceKm: null,
+        deliveryCharge: null,
+      }),
+    });
+
     goNext();
   }
 

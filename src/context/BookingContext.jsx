@@ -1,13 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
-const STEPS = [
-  "date",
-  "type",
-  "outlet",
-  "details",
-  "customer",
-  "confirmation",
-];
 
 const initialBooking = {
   date: null,        // e.g. "2026-08-24"
@@ -34,6 +26,10 @@ const initialBooking = {
   takeawayQuantity: 1,
   pickupWindow: null,
 
+  //addons
+  wantsAddOns: false,
+  payasamOption: [],
+
   // customer
   name: "",
   phone: "",
@@ -49,6 +45,21 @@ const BookingContext = createContext(null);
 export function BookingProvider({ children }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [booking, setBooking] = useState(initialBooking);
+
+  const showAddons =
+    booking.date === "2026-08-26" &&
+    ["parcel", "takeaway"].includes(booking.orderType) &&
+    ["grace-nerul", "grace-kharghar", "eternal-nerul"].includes(booking.outletId);
+
+  const STEPS = [
+    "date",
+    "type",
+    "outlet",
+    "details",
+    ...(showAddons ? ["addons"] : []),
+    "customer",
+    "confirmation",
+  ];
 
   const api = useMemo(
     () => ({

@@ -1,6 +1,5 @@
 import { useBooking } from "../context/BookingContext";
 import QuantityStepper from "./QuantityStepper";
-import { TIME_SLOTS } from "../data/outlets";
 import { MAX_TABLE_PARTY_SIZE, tableTotal, formatRupees, getSadhyaPrice } from "../lib/pricing";
 
 export default function StepTableDetails() {

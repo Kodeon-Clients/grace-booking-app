@@ -137,9 +137,13 @@ select {
   padding: 20px 16px 48px;
 }
 
+button {
+  cursor: pointer;
+}
+
 .step-card {
   width: 100%;
-  max-width: 560px;
+  max-width: 600px;
   background: #fff;
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);

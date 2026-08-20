@@ -7,6 +7,7 @@ export default function GoogleAddressSearch({
   value,
   onChange,
   onSelect,
+  outletId,
 }) {
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
@@ -16,7 +17,6 @@ export default function GoogleAddressSearch({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Always keep the latest callbacks
   useEffect(() => {
     onChangeRef.current = onChange;
   }, [onChange]);
@@ -84,12 +84,8 @@ export default function GoogleAddressSearch({
               place.name ||
               "";
 
-            // IMPORTANT:
-            // Update React's controlled value
-            // immediately after Google selection.
             onChangeRef.current(address);
 
-            // Send complete location data to parent
             onSelectRef.current({
               address,
               lat,
@@ -124,6 +120,22 @@ export default function GoogleAddressSearch({
       autocompleteRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (!outletId) return;
+
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+
+    onChangeRef.current("");
+    onSelectRef.current({
+      address: "",
+      lat: null,
+      lng: null,
+      place: null,
+    });
+  }, [outletId]);
 
   return (
     <div className="field">
