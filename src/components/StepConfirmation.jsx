@@ -33,10 +33,8 @@ export default function StepConfirmation() {
   )?.label;
 
   const detail =
-    booking.orderType === "parcel"
-      ? `${booking.quantity} × Sadhya to ${booking.address}`
-      : booking.orderType === "table"
-        ? `${booking.partySize} people`
+    booking.orderType === "parcel" ? `${booking.quantity} × Sadhya`
+      : booking.orderType === "table" ? `${booking.partySize} people`
         : `${booking.takeawayQuantity} × Sadhya`;
 
   const payasamDetail = (booking.payasamOption || [])
@@ -168,11 +166,17 @@ export default function StepConfirmation() {
           </span>
         </div>
 
-        <div className="ticket__row">
+ 
+        {booking.orderType === "parcel" && (
+          <div className="ticket__row">
+            <span>Delivery Address</span>
+            <span>{booking.address}</span>
+          </div>
+        )}
+               <div className="ticket__row">
           <span>Details</span>
           <span>{finalDetail}</span>
         </div>
-
         <div className="ticket__row">
           <span>Amount due</span>
           <span>

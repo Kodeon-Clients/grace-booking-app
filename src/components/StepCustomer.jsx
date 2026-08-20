@@ -77,6 +77,13 @@ export default function StepCustomer() {
     }
   }
 
+  const detail =
+    booking.orderType === "parcel" ? `${booking.quantity} × Sadhya`
+      : booking.orderType === "table" ? `${booking.partySize} people`
+        : `${booking.takeawayQuantity} × Sadhya`;
+  const payasamDetail = (booking.payasamOption || []).map((payasam) => `${booking.orderType === "table" ? booking.partySize : booking.takeawayQuantity} × ${payasam.name}`).join(" + ");
+
+  const finalDetail = payasamDetail ? `${detail} + ${payasamDetail}` : detail;
   return (
     <div className="step-card">
       <div className="back-nav">
@@ -123,7 +130,9 @@ export default function StepCustomer() {
       <div className="summary">
         <div className="summary__row"><span>Outlet</span><span>{outlet?.name}</span></div>
         <div className="summary__row"><span>Date</span><span>{dateLabel}</span></div>
-        <div className="summary__row"><span>Order</span><span>{TYPE_LABEL[booking.orderType]}</span></div>
+        <div className="summary__row"><span>Order type</span><span>{TYPE_LABEL[booking.orderType]}</span></div>
+        {booking.orderType === "parcel" && (<div className="summary__row"><span>Delivery Address</span><span>{booking.address}</span></div>)}
+        <div className="summary__row"><span>Details</span><span>{finalDetail}</span></div>
         <div className="summary__row is-total">
           <span>Total amount</span>
           <span className="amount">{formatRupees(booking.totalAmount || 0)}</span>

@@ -50,7 +50,7 @@ export default function StepParcelDetails() {
       : null;
 
   const finalTotal = total + payasamTotal;
-  
+
   async function handleCheckDistance() {
     if (!booking.address?.trim()) {
       setError("Enter a delivery address.");
@@ -138,8 +138,8 @@ export default function StepParcelDetails() {
       return "Please enter your delivery address.";
     }
 
-    if (!booking.postcode?.trim()) {
-      return "Please enter your postcode.";
+    if (!/^\d{6}$/.test(booking.postcode?.trim() || "")) {
+      return "Please enter a valid 6-digit postcode.";
     }
 
     if (

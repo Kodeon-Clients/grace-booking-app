@@ -485,4 +485,19 @@ button {
   .addon-grid {
     grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
   }
+
+  .summary {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .summary__row:not(.is-total) {
+    /* flex-direction: column; */
+    gap: 38px !important;
+  }
+
+  /* .summary__row span:nth-child(2) {
+    text-align: left !important;
+  } */
 }
