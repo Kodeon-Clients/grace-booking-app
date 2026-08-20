@@ -81,9 +81,16 @@ export default function StepAddons() {
 
     return (
         <div className="step-card">
-            <div className="back-nav">
+            <div className="back-nav" style={{ width: "100%", display: "flex",justifyContent:"space-between" }}>
                 <button className="btn-ghost" onClick={goBack}>
                     ← Back
+                </button>
+                <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={skip}
+                >
+                    Skip →
                 </button>
             </div>
 
@@ -98,7 +105,7 @@ export default function StepAddons() {
                 14 payasams, one mela. Pick your favourite, or try a few.
             </p>
 
-            <div className="choice-grid" style={{ gridTemplateColumns: "repeat(2,minmax(0,1fr))" }}>
+            <div className="choice-grid addon-grid">
                 {PAYASAMS.map((payasam) => {
                     const selected = selectedPayasams.some(
                         (item) => item.name === payasam.name
@@ -163,18 +170,7 @@ export default function StepAddons() {
                     </button>
                 )}
 
-                <button
-                    type="button"
-                    className="btn-ghost"
-                    onClick={skip}
-                    style={{
-                        width: "100%",
-                        marginTop: 10,
-                        fontSize: "14px"
-                    }}
-                >
-                    Skip — I don't want payasam
-                </button>
+
             </div>
         </div>
     );

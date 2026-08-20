@@ -195,6 +195,10 @@ button {
   gap: 12px;
 }
 
+.addon-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .choice-card {
   display: flex;
   align-items: center;
@@ -353,6 +357,11 @@ button {
   font-size: 14px;
   color: var(--ink-soft);
   padding: 4px 0;
+  gap: 14px;
+}
+
+.summary__row span:nth-child(2) {
+  text-align: right;
 }
 
 .summary__row.is-total {
@@ -470,4 +479,10 @@ button {
   padding: 10px 14px;
   font-size: 13px;
   margin-bottom: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  .addon-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
 }
