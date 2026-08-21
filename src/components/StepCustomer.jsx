@@ -458,7 +458,7 @@ export default function StepCustomer() {
           )}
 
           <p>
-            Grace's team will call you shortly to confirm details and collect payment.
+            Grace's team will call you shortly to confirm details and collect payment. For any queries contact <a href="tel:+919321573234">+919321573234</a>
           </p>
 
           <button

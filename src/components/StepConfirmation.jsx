@@ -43,8 +43,7 @@ export default function StepConfirmation() {
 
     async function saveBooking() {
       try {
-        setLoading(false);
-       // setLoading(true);
+        setLoading(true);
         setError(null);
 
         const cmsBooking = {
@@ -56,11 +55,11 @@ export default function StepConfirmation() {
           payasamOption: (booking.payasamOption || []).map((payasam) => `${payasam.name} (${payasam.quantity})`).join(", "),
         };
 
-        // const result = await insertItemToCMS(cmsBooking);
+        const result = await insertItemToCMS(cmsBooking);
 
-        // if (result._id) {
-        //   setLoading(false);
-        // }
+        if (result._id) {
+          setLoading(false);
+        }
 
       } catch (error) {
         console.error("CMS insert failed:", error);
