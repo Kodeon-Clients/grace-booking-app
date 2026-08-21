@@ -43,7 +43,8 @@ export default function StepConfirmation() {
 
     async function saveBooking() {
       try {
-        setLoading(true);
+        setLoading(false);
+       // setLoading(true);
         setError(null);
 
         const cmsBooking = {

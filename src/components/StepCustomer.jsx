@@ -38,26 +38,23 @@ export default function StepCustomer() {
       return "Please enter a valid email address.";
     }
 
-    if (!booking.door?.trim()) {
+    if (booking.orderType === "parcel" && !booking.door?.trim()) {
       return "Please enter your door/flat number.";
     }
 
-    if (!booking.address?.trim()) {
+    if (booking.orderType === "parcel" && !booking.address?.trim()) {
       return "Please enter your delivery address.";
     }
 
-    if (!/^\d{6}$/.test(booking.postcode?.trim() || "")) {
+    if (booking.orderType === "parcel" && !/^\d{6}$/.test(booking.postcode?.trim() || "")) {
       return "Please enter a valid 6-digit postcode.";
     }
 
-    if (
-      booking.latitude == null ||
-      booking.longitude == null
-    ) {
+    if (booking.orderType === "parcel" && (booking.latitude == null || booking.longitude == null)) {
       return "Please search for your address first.";
     }
 
-    if (booking.distanceKm == null) {
+    if (booking.orderType === "parcel" && booking.distanceKm == null) {
       return "Please calculate your delivery charge before continuing.";
     }
 
@@ -144,14 +141,12 @@ export default function StepCustomer() {
     booking.distanceKm > MAX_DELIVERY_KM;
 
   const total =
-    charge != null
-      ? bookingTotal({
-        ...booking,
-        deliveryCharge: charge,
-      })
-      : null;
+    booking.orderType === "parcel"
+      ? bookingTotal(booking) + (charge ?? 0)
+      : bookingTotal(booking);
 
-  const finalTotal = total + payasamTotal;
+
+  const finalTotal = booking.totalAmount;
 
   async function handleCheckDistance() {
     if (!booking.address?.trim()) {
@@ -186,10 +181,6 @@ export default function StepCustomer() {
         outlet,
       });
 
-      // console.log(
-      //   "calculateDistance result:",
-      //   result
-      // );
 
       if (
         !result ||
@@ -200,16 +191,27 @@ export default function StepCustomer() {
         );
       }
 
-      const distanceKm = Number(
-        result.distanceKm.toFixed(2)
-      );
+      const distanceKm = Number(result.distanceKm.toFixed(2));
 
-      const deliveryCharge =
-        deliveryChargeForDistance(distanceKm);
+      const deliveryCharge = deliveryChargeForDistance(distanceKm);
+
+      const updatedBooking = {
+        ...booking,
+        distanceKm,
+        deliveryCharge,
+      };
+
+      const foodTotal = bookingTotal(updatedBooking);
+
+      const finalTotals =
+        foodTotal +
+        (deliveryCharge ?? 0) +
+        payasamTotal;
 
       update({
         distanceKm,
         deliveryCharge,
+        totalAmount: finalTotals,
       });
 
       if (deliveryCharge === null) {
@@ -230,7 +232,6 @@ export default function StepCustomer() {
       setChecking(false);
     }
   }
-
 
   return (
     <div className="step-card">
@@ -418,15 +419,16 @@ export default function StepCustomer() {
               </span>
             </div>
 
-            <div className="summary__row is-total">
-              <span>Total</span>
 
-              <span className="amount">
-                {formatRupees(finalTotal)}
-              </span>
-            </div>
           </>
         )}
+        <div className="summary__row is-total">
+          <span>Total</span>
+
+          <span className="amount">
+            {formatRupees(finalTotal)}
+          </span>
+        </div>
       </div>
       {/* Calculate delivery */}
       {booking.orderType === "parcel" && booking.distanceKm == null ? (

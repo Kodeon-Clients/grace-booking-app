@@ -6,28 +6,46 @@ import StepAddons from "./StepAddons";
 
 export default function StepParcelDetails() {
   const { booking, update, goNext, goBack, showAddons } = useBooking();
-  const [error, setError] = useState(null);
 
-  const total = takeawayTotal(
-    booking.date,
-    booking.quantity
-  );
+  const total = booking.wantsOnlyPayasam
+    ? 0
+    : takeawayTotal(
+      booking.date,
+      booking.quantity
+    );
 
   const payasamTotal = (booking.payasamOption || []).reduce(
     (sum, payasam) => sum + payasam.price,
     0
   );
+  const price = getSadhyaPrice(booking.date, booking.orderType);
 
   const finalTotal = total + payasamTotal;
 
-  const price = getSadhyaPrice(
-    booking.date,
-    booking.orderType
-  );
-
   function handleContinue() {
+    const total = booking.wantsOnlyPayasam
+      ? 0
+      : takeawayTotal(
+        booking.date,
+        booking.quantity
+      );
+
+    const payasamTotal = (booking.payasamOption || []).reduce(
+      (sum, payasam) => sum + payasam.price * (payasam.quantity || 1),
+      0
+    );
+
+    const finalTotal = total + payasamTotal;
+
     update({
       totalAmount: finalTotal,
+      address: "",
+      postcode: "",
+      landmark: "",
+      latitude: null,
+      longitude: null,
+      distanceKm: null,
+      deliveryCharge: null,
     });
 
     goNext();
@@ -54,23 +72,48 @@ export default function StepParcelDetails() {
         Delivery — home delivery
       </h2>
 
-      {error && (
-        <div className="error-banner">
-          {error}
-        </div>
-      )}
 
       {/* Quantity */}
-      <div style={{ display: "flex", gap: "16px" }}>
-        <div className="field" >
-          <label className="field__label">
-            How many Sadhya?
-          </label>
+      <div>
+        <p className="choice-card__title">Sadhya</p>
+        <div className="choice-card ">
+          <div
+            style={{
+              display: "flex",
+              gap: 12,
+              alignItems: "center",
+            }}
+          >
+            <img
+              src="/sadhya.png"
+              alt=""
+              style={{
+                width: 56,
+                height: 56,
+                objectFit: "cover",
+                borderRadius: 8,
+                flexShrink: 0,
+              }}
+            />
+            <div>
+              <div
+                className="choice-card__title"
+                style={{
+                  lineHeight: 1,
+                  marginBottom: "4px",
+                }}
+              >
+                Sadhya
+              </div>
 
+              <div className="choice-card__meta">
+                {formatRupees(price)} each
+              </div>
+            </div>
+          </div>
           <QuantityStepper
             value={booking.quantity}
-            onChange={(v) => update({ quantity: v, })}
-            unitLabel={`${formatRupees(price)} each`}
+            onChange={(v) => update({ quantity: v })}
             disabled={booking.wantsOnlyPayasam}
           />
         </div>
@@ -99,7 +142,7 @@ export default function StepParcelDetails() {
       </div>
       {showAddons && (<StepAddons />)}
       {!showAddons && (
-        <div className="summary">
+        <div className="summary" style={{ marginTop: "16px" }}>
           <div className="summary__row">
             <div>
               <span>{booking.quantity} × {formatRupees(price)}</span>

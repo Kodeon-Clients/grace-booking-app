@@ -6,24 +6,36 @@ import StepAddons from "./StepAddons";
 export default function StepTakeawayDetails() {
   const { booking, update, goNext, goBack, showAddons } = useBooking();
 
-  const total = takeawayTotal(
-    booking.date,
-    booking.takeawayQuantity
-  );
+  const total = booking.wantsOnlyPayasam
+    ? 0
+    : takeawayTotal(
+      booking.date,
+      booking.takeawayQuantity
+    );
 
   const payasamTotal = (booking.payasamOption || []).reduce(
     (sum, payasam) => sum + payasam.price,
     0
   );
+  const price = getSadhyaPrice(booking.date, booking.orderType);
 
   const finalTotal = total + payasamTotal;
 
-  const price = getSadhyaPrice(
-    booking.date,
-    booking.orderType
-  );
-
   function handleContinue() {
+    const total = booking.wantsOnlyPayasam
+      ? 0
+      : takeawayTotal(
+        booking.date,
+        booking.takeawayQuantity
+      );
+
+    const payasamTotal = (booking.payasamOption || []).reduce(
+      (sum, payasam) => sum + payasam.price * (payasam.quantity || 1),
+      0
+    );
+
+    const finalTotal = total + payasamTotal;
+
     update({
       totalAmount: finalTotal,
     });
@@ -40,13 +52,46 @@ export default function StepTakeawayDetails() {
         Takeaway — pickup from outlet
       </h2>
 
-      <div style={{ display: "flex", gap: "16px" }}>
-        <div className="field">
-          <label className="field__label">How many Sadhya?</label>
+      <div>
+        <p className="choice-card__title">Sadhya</p>
+        <div className="choice-card ">
+          <div
+            style={{
+              display: "flex",
+              gap: 12,
+              alignItems: "center",
+            }}
+          >
+            <img
+              src="/sadhya.png"
+              alt=""
+              style={{
+                width: 56,
+                height: 56,
+                objectFit: "cover",
+                borderRadius: 8,
+                flexShrink: 0,
+              }}
+            />
+            <div>
+              <div
+                className="choice-card__title"
+                style={{
+                  lineHeight: 1,
+                  marginBottom: "4px",
+                }}
+              >
+                Sadhya
+              </div>
+
+              <div className="choice-card__meta">
+                {formatRupees(price)} each
+              </div>
+            </div>
+          </div>
           <QuantityStepper
             value={booking.takeawayQuantity}
             onChange={(v) => update({ takeawayQuantity: v })}
-            unitLabel={`${formatRupees(price)} each`}
             disabled={booking.wantsOnlyPayasam}
           />
         </div>
@@ -63,6 +108,9 @@ export default function StepTakeawayDetails() {
                   takeawayQuantity: checked
                     ? 0
                     : Math.max(1, booking.takeawayQuantity),
+                  totalAmount: checked
+                    ? 0
+                    : booking.totalAmount,
                 });
               }}
             />
@@ -74,7 +122,7 @@ export default function StepTakeawayDetails() {
       {showAddons && (<StepAddons />)}
 
       {!showAddons && (
-        <div className="summary">
+        <div className="summary" style={{ marginTop: "16px" }}>
           <div className="summary__row">
             <div>
               <span>{booking.takeawayQuantity} × {formatRupees(price)}</span>

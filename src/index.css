@@ -148,10 +148,11 @@ button:disabled {
 .payasam-checkbox {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-top: 16px;
   cursor: pointer;
   color: var(--maroon);
+  font-size: 13px;
 }
 
 .payasam-checkbox input {
@@ -336,11 +337,7 @@ button:disabled {
 .stepper {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  border: 1.5px solid var(--cream-deep);
-  border-radius: var(--radius-control);
-  padding: 6px 8px;
-  background: var(--cream);
+  gap: 8px;
 }
 
 .stepper__btn {

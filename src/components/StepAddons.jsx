@@ -1,4 +1,5 @@
 import { useBooking } from "../context/BookingContext";
+import { getSadhyaPrice } from "../lib/pricing";
 
 const PAYASAMS = [
     { name: "Pal payasam", price: 600, image: "/assets/images/payasam/Pal payasam.webp" },
@@ -24,16 +25,8 @@ export default function StepAddons() {
     const selectedPayasams = booking.payasamOption || [];
 
     function getQuantity(name) {
-        return selectedPayasams.find(
-            (item) => item.name === name
-        )?.quantity || 0;
-    }
-
-    function calculatePayasamTotal(items) {
-        return items.reduce(
-            (total, item) =>
-                total + item.price * item.quantity * booking.takeawayQuantity,
-            0
+        return (
+            selectedPayasams.find((item) => item.name === name)?.quantity || 0
         );
     }
 
@@ -49,23 +42,19 @@ export default function StepAddons() {
             });
         }
 
-        const oldPayasamTotal = calculatePayasamTotal(selectedPayasams);
-        const newPayasamTotal = calculatePayasamTotal(updatedPayasams);
-
-        const baseTotal =
-            booking.totalAmount - oldPayasamTotal;
-
         update({
             payasamOption: updatedPayasams,
             wantsAddOns: updatedPayasams.length > 0,
-            totalAmount: baseTotal + newPayasamTotal,
         });
+
     }
 
     return (
         <div className="choice-grid addon-grid" style={{
             marginBottom: "20px",
         }}>
+            <p className="choice-card__title">Payasam</p>
+
             {PAYASAMS.map((payasam) => {
                 const quantity = getQuantity(payasam.name);
                 const selected = quantity > 0;
