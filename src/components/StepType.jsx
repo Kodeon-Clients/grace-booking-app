@@ -8,7 +8,7 @@ const TYPES = (date) => {
     {
       id: "parcel",
       glyph: "🛵",
-      title: "Parcel",
+      title: "Delivery",
       meta: `Delivered to your home — ₹${prices.parcel} + delivery`,
     },
     {

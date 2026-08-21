@@ -32,21 +32,9 @@ export default function StepConfirmation() {
     (d) => d.id === booking.date
   )?.label;
 
-  const detail =
-    booking.orderType === "parcel" ? `${booking.quantity} × Sadhya`
-      : booking.orderType === "table" ? `${booking.partySize} people`
-        : `${booking.takeawayQuantity} × Sadhya`;
-
-  const payasamDetail = (booking.payasamOption || [])
-    .map(
-      (payasam) =>
-        `${booking.orderType === "table" ? booking.partySize : booking.takeawayQuantity} × ${payasam.name}`
-    )
-    .join(" + ");
-
-  const finalDetail = payasamDetail
-    ? `${detail} + ${payasamDetail}`
-    : detail;
+  const detail = booking.orderType === "parcel" ? booking.quantity > 0 ? `${booking.quantity} × Sadhya` : "" : booking.orderType === "table" ? `${booking.partySize} people` : booking.takeawayQuantity > 0 ? `${booking.takeawayQuantity} × Sadhya` : "";
+  const payasamDetail = (booking.payasamOption || []).map((payasam) => `${payasam.quantity} × ${payasam.name}`).join(" + ");
+  const finalDetail = [detail, payasamDetail].filter(Boolean).join(" + ");
 
   useEffect(() => {
     if (hasInserted.current) return;
@@ -64,13 +52,14 @@ export default function StepConfirmation() {
           quantity: booking.orderType === "parcel" ? booking.quantity : 0,
           partySize: booking.orderType === "table" ? booking.partySize : 0,
           takeawayQuantity: booking.orderType === "takeaway" ? booking.takeawayQuantity : 0,
-          payasamOption: (booking.payasamOption || []).map((payasam) => `${payasam.name} - ₹${payasam.price}`).join(", "),
+          payasamOption: (booking.payasamOption || []).map((payasam) => `${payasam.name} (${payasam.quantity})`).join(", "),
         };
 
-        const result = await insertItemToCMS(cmsBooking);
-        if (result._id) {
-          setLoading(false);
-        }
+        // const result = await insertItemToCMS(cmsBooking);
+
+        // if (result._id) {
+        //   setLoading(false);
+        // }
 
       } catch (error) {
         console.error("CMS insert failed:", error);
@@ -166,14 +155,14 @@ export default function StepConfirmation() {
           </span>
         </div>
 
- 
+
         {booking.orderType === "parcel" && (
           <div className="ticket__row">
             <span>Delivery Address</span>
             <span>{booking.address}</span>
           </div>
         )}
-               <div className="ticket__row">
+        <div className="ticket__row">
           <span>Details</span>
           <span>{finalDetail}</span>
         </div>

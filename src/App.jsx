@@ -10,7 +10,6 @@ import StepTableDetails from "./components/StepTableDetails";
 import StepTakeawayDetails from "./components/StepTakeawayDetails";
 import StepCustomer from "./components/StepCustomer";
 import StepConfirmation from "./components/StepConfirmation";
-import StepAddons from "./components/StepAddons";
 
 /* --------------------------------
    Header
@@ -72,18 +71,10 @@ function AppShell({ children, booking = false }) {
 function FlowStep() {
   const { step, booking } = useBooking();
 
-  const showAddons =
-    booking.date === "2026-08-26" &&
-    ["parcel", "takeaway"].includes(booking.orderType) &&
-    ["grace-nerul", "grace-kharghar", "eternal-nerul"].includes(booking.outletId);
-
   const steps = {
     date: <StepDate />,
     outlet: <StepOutlet />,
     type: <StepType />,
-    ...(showAddons && {
-      addons: <StepAddons />,
-    }),
     customer: <StepCustomer />,
     confirmation: <StepConfirmation />,
   };

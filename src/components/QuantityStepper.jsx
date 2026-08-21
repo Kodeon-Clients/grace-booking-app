@@ -1,4 +1,4 @@
-export default function QuantityStepper({ value, onChange, min = 1, max = 999, unitLabel }) {
+export default function QuantityStepper({ value, onChange, min = 1, max = 999, unitLabel, disabled = false, }) {
   function clamp(v) {
     return Math.max(min, Math.min(max, v));
   }
@@ -7,6 +7,7 @@ export default function QuantityStepper({ value, onChange, min = 1, max = 999, u
       <button
         type="button"
         className="stepper__btn"
+        disabled={disabled}
         onClick={() => onChange(clamp(value - 1))}
         aria-label="Decrease"
       >
@@ -16,6 +17,7 @@ export default function QuantityStepper({ value, onChange, min = 1, max = 999, u
       <button
         type="button"
         className="stepper__btn"
+        disabled={disabled}
         onClick={() => onChange(clamp(value + 1))}
         aria-label="Increase"
       >

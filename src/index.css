@@ -141,9 +141,28 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.payasam-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  cursor: pointer;
+  color: var(--maroon);
+}
+
+.payasam-checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--maroon);
+  cursor: pointer;
+}
 .step-card {
   width: 100%;
-  max-width: 600px;
+  max-width: 550px;
   background: #fff;
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
@@ -196,7 +215,7 @@ button {
 }
 
 .addon-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
 .choice-card {
@@ -482,8 +501,8 @@ button {
 }
 
 @media screen and (max-width: 768px) {
-  .addon-grid {
-    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  .choice-card {
+    padding: 12px !important;
   }
 
   .summary {

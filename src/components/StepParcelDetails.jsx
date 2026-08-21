@@ -1,29 +1,16 @@
 import { useState } from "react";
 import { useBooking } from "../context/BookingContext";
 import QuantityStepper from "./QuantityStepper";
-
-import {
-  MAX_DELIVERY_KM,
-  deliveryChargeForDistance,
-  deliverySlabLabel,
-  formatRupees,
-  getSadhyaPrice,
-  bookingTotal,
-} from "../lib/pricing";
-
-import { OUTLETS } from "../data/outlets";
-import GoogleAddressSearch from "./GoogleAddressSearch";
-import { calculateDistance } from "../lib/calculateDistance";
+import { formatRupees, getSadhyaPrice, takeawayTotal, } from "../lib/pricing";
+import StepAddons from "./StepAddons";
 
 export default function StepParcelDetails() {
-  const { booking, update, goNext, goBack } = useBooking();
-
-  const [checking, setChecking] = useState(false);
+  const { booking, update, goNext, goBack, showAddons } = useBooking();
   const [error, setError] = useState(null);
 
-  const price = getSadhyaPrice(
+  const total = takeawayTotal(
     booking.date,
-    booking.orderType
+    booking.quantity
   );
 
   const payasamTotal = (booking.payasamOption || []).reduce(
@@ -31,152 +18,14 @@ export default function StepParcelDetails() {
     0
   );
 
-
-
-  const charge = deliveryChargeForDistance(
-    booking.distanceKm
-  );
-
-  const outOfRange =
-    booking.distanceKm != null &&
-    booking.distanceKm > MAX_DELIVERY_KM;
-
-  const total =
-    charge != null
-      ? bookingTotal({
-        ...booking,
-        deliveryCharge: charge,
-      })
-      : null;
-
   const finalTotal = total + payasamTotal;
 
-  async function handleCheckDistance() {
-    if (!booking.address?.trim()) {
-      setError("Enter a delivery address.");
-      return;
-    }
-
-    if (
-      booking.latitude == null ||
-      booking.longitude == null
-    ) {
-      setError("Please search for your address first.");
-      return;
-    }
-
-    const outlet = OUTLETS.find(
-      (o) => o.id === booking.outletId
-    );
-
-    if (!outlet) {
-      setError("Outlet not found.");
-      return;
-    }
-
-    setError(null);
-    setChecking(true);
-
-    try {
-      const result = await calculateDistance({
-        latitude: booking.latitude,
-        longitude: booking.longitude,
-        outlet,
-      });
-
-      // console.log(
-      //   "calculateDistance result:",
-      //   result
-      // );
-
-      if (
-        !result ||
-        typeof result.distanceKm !== "number"
-      ) {
-        throw new Error(
-          `Invalid distance result: ${JSON.stringify(result)}`
-        );
-      }
-
-      const distanceKm = Number(
-        result.distanceKm.toFixed(2)
-      );
-
-      const deliveryCharge =
-        deliveryChargeForDistance(distanceKm);
-
-      update({
-        distanceKm,
-        deliveryCharge,
-      });
-
-      if (deliveryCharge === null) {
-        setError(
-          `Sorry, this address is outside our ${MAX_DELIVERY_KM} km delivery range.`
-        );
-      }
-    } catch (error) {
-      console.error(
-        "Distance calculation failed:",
-        error
-      );
-
-      setError(
-        "Couldn't calculate distance. Please check your address and try again."
-      );
-    } finally {
-      setChecking(false);
-    }
-  }
-
-  function validate() {
-    if (!booking.door?.trim()) {
-      return "Please enter your door/flat number.";
-    }
-
-    if (!booking.address?.trim()) {
-      return "Please enter your delivery address.";
-    }
-
-    if (!/^\d{6}$/.test(booking.postcode?.trim() || "")) {
-      return "Please enter a valid 6-digit postcode.";
-    }
-
-    if (
-      booking.latitude == null ||
-      booking.longitude == null
-    ) {
-      return "Please search for your address first.";
-    }
-
-    if (booking.distanceKm == null) {
-      return "Please calculate your delivery charge before continuing.";
-    }
-
-    if (outOfRange) {
-      return `Sorry, we don't deliver beyond ${MAX_DELIVERY_KM} km.`;
-    }
-
-    return null;
-  }
+  const price = getSadhyaPrice(
+    booking.date,
+    booking.orderType
+  );
 
   function handleContinue() {
-    const validationError = validate();
-
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-
-    if (finalTotal == null) {
-      setError(
-        "Please calculate your delivery charge before continuing."
-      );
-      return;
-    }
-
-    setError(null);
-
     update({
       totalAmount: finalTotal,
     });
@@ -202,7 +51,7 @@ export default function StepParcelDetails() {
           marginBottom: 16,
         }}
       >
-        Parcel — home delivery
+        Delivery — home delivery
       </h2>
 
       {error && (
@@ -212,201 +61,63 @@ export default function StepParcelDetails() {
       )}
 
       {/* Quantity */}
-      <div className="field">
-        <label className="field__label">
-          How many Sadhya?
-        </label>
+      <div style={{ display: "flex", gap: "16px" }}>
+        <div className="field" >
+          <label className="field__label">
+            How many Sadhya?
+          </label>
 
-        <QuantityStepper
-          value={booking.quantity}
-          onChange={(v) =>
-            update({
-              quantity: v,
-            })
-          }
-          unitLabel={`${formatRupees(price)} each`}
-        />
-      </div>
-
-      {/* Door / Flat */}
-      <div className="field">
-        <label className="field__label">
-          Door/Flat no.
-        </label>
-
-        <input
-          className="field__input"
-          value={booking.door || ""}
-          onChange={(e) =>
-            update({
-              door: e.target.value,
-            })
-          }
-        />
-      </div>
-
-      {/* Address */}
-      <div className="field">
-        <GoogleAddressSearch
-          value={booking.address || ""}
-          onChange={(address) =>
-            update({
-              address,
-              latitude: null,
-              longitude: null,
-              distanceKm: null,
-              deliveryCharge: null,
-            })
-          }
-          onSelect={({ address, lat, lng }) =>
-            update({
-              address,
-              latitude: lat,
-              longitude: lng,
-              distanceKm: null,
-              deliveryCharge: null,
-            })
-          }
-        />
-      </div>
-
-      {/* Landmark */}
-      <div className="field">
-        <label className="field__label">
-          Landmark (optional)
-        </label>
-
-        <input
-          className="field__input"
-          value={booking.landmark || ""}
-          onChange={(e) =>
-            update({
-              landmark: e.target.value,
-            })
-          }
-        />
-      </div>
-
-      {/* Postcode */}
-      <div className="field">
-        <label className="field__label">
-          Postcode
-        </label>
-
-        <input
-          className="field__input"
-          placeholder="e.g. 410210"
-          value={booking.postcode || ""}
-          onChange={(e) =>
-            update({
-              postcode: e.target.value,
-            })
-          }
-        />
-
-        <p className="field__hint">
-          Helps us calculate your delivery charge accurately.
-        </p>
-      </div>
-
-      {/* Calculate delivery */}
-      {booking.distanceKm == null ? (
-        <button
-          type="button"
-          className="btn btn-primary"
-          style={{ marginBottom: 20 }}
-          onClick={handleCheckDistance}
-          disabled={checking}
-        >
-          {checking
-            ? "Calculating…"
-            : "Calculate delivery charge"}
-        </button>
-      ) : checking ? null : (
-        <div className="summary">
-          {outOfRange ? (
-            <p
-              className="summary__note"
-              style={{
-                fontSize: 14,
-                margin: 0,
-              }}
-            >
-              Sorry, we don't deliver beyond{" "}
-              {MAX_DELIVERY_KM} km. Please choose
-              another Grace outlet closer to you,
-              or switch to takeaway.
-            </p>
-          ) : (
-            <>
-              <div className="summary__row">
-                <span>Distance</span>
-
-                <span className="amount">
-                  {booking.distanceKm} km
-                </span>
-              </div>
-
-              <div className="summary__row">
-                <span>
-                  Sadhya × {booking.quantity}
-                </span>
-
-                <span className="amount">
-                  {formatRupees(
-                    booking.quantity * price
-                  )}
-                </span>
-              </div>
-              {booking.payasamOption?.length > 0 && (
-                <div className="summary__row">
-                  <span>
-                    Payassam × {booking.payasamOption?.length}
-                  </span>
-
-                  <span className="amount">
-                    {formatRupees(
-                      payasamTotal
-                    )}
-                  </span>
-                </div>
-              )}
-              <div className="summary__row">
-                <span>Delivery charge</span>
-
-                <span className="amount">
-                  {deliverySlabLabel(
-                    booking.distanceKm
-                  )}{" "}
-                  -{" "}
-                  {formatRupees(charge)}
-                </span>
-              </div>
-
-              <div className="summary__row is-total">
-                <span>Total</span>
-
-                <span className="amount">
-                  {formatRupees(finalTotal)}
-                </span>
-              </div>
-            </>
-          )}
-        </div>
-      )}
-
-      {/* Loader */}
-      {checking && (
-        <div className="loader-row">
-          <div
-            className="pookalam-loader"
-            role="status"
-            aria-label="Calculating distance"
+          <QuantityStepper
+            value={booking.quantity}
+            onChange={(v) => update({ quantity: v, })}
+            unitLabel={`${formatRupees(price)} each`}
+            disabled={booking.wantsOnlyPayasam}
           />
+        </div>
+        {showAddons && (
+          <label className="payasam-checkbox">
+            <input
+              type="checkbox"
+              checked={booking.wantsOnlyPayasam}
+              onChange={(e) => {
+                const checked = e.target.checked;
 
-          <span className="loader-row__label">
-            Calculating distance…
-          </span>
+                update({
+                  wantsOnlyPayasam: checked,
+                  quantity: checked
+                    ? 0
+                    : Math.max(1, booking.quantity),
+                });
+              }}
+            />
+
+            <span>
+              I want to buy only Payasam
+            </span>
+          </label>
+        )}
+      </div>
+      {showAddons && (<StepAddons />)}
+      {!showAddons && (
+        <div className="summary">
+          <div className="summary__row">
+            <div>
+              <span>{booking.quantity} × {formatRupees(price)}</span>
+
+              {(booking.payasamOption || []).map((payasam) => (
+                <span key={payasam.name}>
+                  {" + "}
+                  {booking.quantity} × {formatRupees(payasam.price)}
+                </span>
+              ))}
+            </div>
+            <span className="amount">{formatRupees(finalTotal)}</span>
+          </div>
+          <div className="summary__row is-total">
+            <span>Total</span>
+            <span className="amount">{formatRupees(finalTotal)}</span>
+          </div>
+          <p className="summary__note">No delivery charge — collect it yourself.</p>
         </div>
       )}
 
@@ -416,10 +127,7 @@ export default function StepParcelDetails() {
         className="btn btn-primary"
         onClick={handleContinue}
         disabled={
-          checking ||
-          outOfRange ||
-          finalTotal == null ||
-          booking.distanceKm == null
+          booking.wantsOnlyPayasam && !(booking.payasamOption || []).some((payasam) => payasam.quantity > 0)
         }
       >
         Continue

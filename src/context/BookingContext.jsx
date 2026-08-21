@@ -27,6 +27,7 @@ const initialBooking = {
   pickupWindow: null,
 
   //addons
+  wantsOnlyPayasam: false,
   wantsAddOns: false,
   payasamOption: [],
 
@@ -40,26 +41,33 @@ const initialBooking = {
   totalAmount: null,
 };
 
+function shouldShowAddons(booking) {
+  return (
+    booking.date === "2026-08-26" &&
+    ["parcel", "takeaway"].includes(booking.orderType) &&
+    ["grace-nerul", "grace-kharghar", "eternal-nerul"].includes(
+      booking.outletId
+    )
+  );
+}
+
 const BookingContext = createContext(null);
 
 export function BookingProvider({ children }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [booking, setBooking] = useState(initialBooking);
 
-  const showAddons =
-    booking.date === "2026-08-26" &&
-    ["parcel", "takeaway"].includes(booking.orderType) &&
-    ["grace-nerul", "grace-kharghar", "eternal-nerul"].includes(booking.outletId);
-
   const STEPS = [
     "date",
     "type",
     "outlet",
     "details",
-    ...(showAddons ? ["addons"] : []),
     "customer",
     "confirmation",
   ];
+
+  const showAddons = shouldShowAddons(booking);
+
 
   const api = useMemo(
     () => ({
@@ -67,6 +75,7 @@ export function BookingProvider({ children }) {
       stepIndex,
       totalSteps: STEPS.length - 1, // confirmation isn't part of the visible trail
       booking,
+      showAddons,
       update(patch) {
         setBooking((prev) => ({ ...prev, ...patch }));
       },
@@ -85,7 +94,7 @@ export function BookingProvider({ children }) {
         setStepIndex(0);
       },
     }),
-    [stepIndex, booking]
+    [stepIndex, booking, showAddons]
   );
 
   return <BookingContext.Provider value={api}>{children}</BookingContext.Provider>;

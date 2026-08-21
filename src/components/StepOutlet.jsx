@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useBooking } from "../context/BookingContext";
 import { OUTLETS, EVENT_DATES } from "../data/outlets";
 
@@ -24,6 +25,11 @@ export default function StepOutlet() {
     update({
       outletId,
       ...(outletChanged && {
+        quantity: 1,
+        takeawayQuantity: 1,
+        wantsOnlyPayasam: false,
+        wantsAddOns: false,
+        payasamOption: [],
         address: "",
         postcode: "",
         landmark: "",
