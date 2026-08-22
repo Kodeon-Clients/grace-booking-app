@@ -1,5 +1,4 @@
 import { useBooking } from "../context/BookingContext";
-import { getSadhyaPrice } from "../lib/pricing";
 
 const PAYASAMS = [
     { name: "Pal payasam", price: 600, image: "/assets/images/payasam/Pal payasam.webp" },
@@ -16,7 +15,7 @@ const PAYASAMS = [
     { name: "Tender coconut payasam", price: 700, image: "/assets/images/payasam/Tender coconut payasam.webp" },
     { name: "Aval payasam", price: 650, image: "/assets/images/payasam/Aval payasam.webp" },
     { name: "Mixed fruit payasam", price: 600, image: "/assets/images/payasam/Mix fruit payasam.webp" },
-    { name: "Lotus seed Payasam", price: 750, image: "/assets/images/payasam/Lotus seed ayasam.webp" },
+    { name: "Lotus payasam", price: 750, image: "/assets/images/payasam/Lotus seed ayasam.webp" },
 ];
 
 export default function StepAddons() {
